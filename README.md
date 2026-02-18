@@ -37,7 +37,7 @@ OpenWork AI is designed to save time for health professionals by automating the 
 
 ## 🏗️ **System Architecture: The 7-Agent Orchestrator**
 
-OpenWork AI operates through a sophisticated **7-agent system** powered by **Gemini 3.0** models. Each agent is specialized for a distinct stage of the research synthesis pipeline.
+OpenWork AI operates through a sophisticated **7-agent system** powered by **Gemini** models. Each agent is specialized for a distinct stage of the research synthesis pipeline.
 
 ### **🔄 Architecture Flow Chart**
 ![OpenWork AI Architecture Workflow](https://storage.googleapis.com/openwork-images/Start%20Decision%20Options%20Flow-2026-02-10-024533.png)
@@ -46,23 +46,22 @@ OpenWork AI operates through a sophisticated **7-agent system** powered by **Gem
 
 ## 🤖 **The 7-Agent System Detailed**
 
-OpenWork AI operates through a sophisticated **7-agent system** powered by **Gemini 3.0** models. Each agent is specialized for a distinct stage of the research synthesis pipeline.
+OpenWork AI operates through a sophisticated **7-agent system** powered by **Gemini** models. Each agent is specialized for a distinct stage of the research synthesis pipeline.
 
 ### **Agent 1: Query Intelligence**
-- **Model**: `gemini-3.0-flash-preview`
 - **Purpose**: Analyzes raw natural language to extract medical entities and generate specialized search variants.
 - **Function**: Abbreviation expansion, intent classification, and routing to sub-agents.
 
-### **Agent 2: Multi-Source Retrieval Coordinator**
+### **Agent 2: Multi-source Retrieval Coordinator (Multi-Agent RAG System)**
 ![OpenWork AI Multi-Source Retrieval Coordinator](https://storage.googleapis.com/openwork-images/mermaid-diagram%20(sub-agents).png)
 - **Technology**: Python Async Orchestrator
 - **Purpose**: Coordinates parallel evidence collection.
 - **Sub-Agents (2.1 to 2.5)**:
-  - **2.1: Guidelines Retriever**: Vector search across Indian clinical practice guidelines (Powered by **Gemini 3 Flash**).
-  - **2.2: PubMed Intelligence**: Advanced query building with MeSH term mapping (Powered by **Gemini 3 Flash**).
-  - **2.3: Full-Text Fetcher**: Retrieves structured content from PMC and open-access PDFs (Powered by **Gemini 3 Flash**).
-  - **2.4: DailyMed Retriever**: Extracts safety, dosing, and warning sections from FDA labels (Powered by **Gemini 3 Flash**).
-  - **2.5: Tavily Smart Search**: On-demand search for recent literature (Powered by **Gemini 3 Flash**).
+  - **2.1: Guidelines Retriever**: Vector search across Indian clinical practice guidelines.
+  - **2.2: PubMed Intelligence**: Advanced query building with MeSH term mapping.
+  - **2.3: Full-Text Fetcher**: Retrieves structured content from PMC and open-access PDFs.
+  - **2.4: DailyMed Retriever**: Extracts safety, dosing, and warning sections from FDA labels.
+  - **2.5: Tavily Smart Search**: On-demand search for recent literature.
 
 ### **Agent 3: Evidence Normalizer**
 - **Purpose**: Standardizes data from multiple formats (XML, HTML, JSON) into a unified structure.
@@ -74,17 +73,14 @@ OpenWork AI operates through a sophisticated **7-agent system** powered by **Gem
 - **Process**: Scores 100+ documents/chunks to find the top 10 most grounded evidence segments.
 
 ### **Agent 5: Evidence Gap Analyzer**
-- **Model**: `gemini-3.0-pro-exp`
 - **Purpose**: Evaluates evidence coverage and identifies missing elements (recency, quality gaps).
 - **Function**: Conditionally triggers Agent 2.5 if gaps are detected.
 
 ### **Agent 6: Synthesis Engine**
-- **Model**: `gemini-3.0-pro-exp` (Complex) or `gemini-3.0-flash-preview` (Simple)
 - **Purpose**: Generates the final research synthesis or interactive study materials.
 - **Function**: Handles contradictions explicitly and ensures every claim has an inline citation [N].
 
 ### **Agent 7: Verification Gate**
-- **Model**: `gemini-3.0-flash-preview`
 - **Purpose**: Final anti-hallucination verification.
 - **Function**: Performs semantic grounding checks to ensure the synthesis matches the source text.
 
@@ -98,8 +94,9 @@ openwork-ai/
 ├── 📂 components/          # React Components (Tailwind CSS)
 ├── 📂 lib/                 # Core Infrastructure
 │   ├── 📂 agents/          # 7-Agent System implementations
+│   │   └── 📂 sub_agents/  # Specific retrieval agents (PubMed, Tavily, etc.)
 │   ├── 📂 evidence/        # 46+ Database Connectors
-│   ├── 📂 config/          # Gemini 3 Model & GCP Config
+│   ├── 📂 config/          # Gemini & GCP Config
 │   └── 📂 citation/        # Unified Reference Parsing
 ├── 📂 public/              # Medical Illustrations & Assets
 ├── 📂 scripts/             # Setup & Security Utilities
@@ -114,12 +111,35 @@ The codebase is modularly organized into a Next.js frontend for professional med
 
 ## ⚡ **Key Features**
 
-- **🔬 Evidence-First Research**: Zero-hallucination commitment with mandatory inline citations.
+- **🔬 Evidence-First Research**: **Least Hallucination** commitment with mandatory inline citations.
 - **🎓 Study & Learn Mode**: Interactive 5-question quizzes with evidence-based explanations.
-- **🚀 High Performance**: End-to-end synthesis in under 60 seconds (powered by Gemini 3 Flash/Pro).
+- **🚀 High Performance**: End-to-end synthesis in under 60 seconds.
 - **🩺 Professional UX**: Designed for rapid information access in clinical workflows.
 
-- **🩺 Professional UX**: Designed for rapid information access in clinical workflows.
+---
+
+## 🧠 **System Prompts**
+
+The core logic for the agents is defined in the system prompts. You can find key prompts here:
+
+- **Agent Prompts**: `lib/agents/system-prompts/` (Contains prompts for various sub-agents)
+- **Study Mode Prompt**: `lib/prompts/study-mode-prompt.ts`
+
+---
+
+## 🔑 **API Keys & Configuration**
+
+To run this project, you will need to configure the following API keys in your `.env.local` file.
+
+| Service | Description | Get Key |
+| :--- | :--- | :--- |
+| **Google Gemini** | Core LLM for all agents | [Get Gemini Key](https://aistudio.google.com/) |
+| **Tavily AI** | Web search for recent literature | [Get Tavily Key](https://tavily.com/) |
+| **NCBI (PubMed)** | Access to PubMed/PMC databases | [Get NCBI Key](https://www.ncbi.nlm.nih.gov/account/) |
+| **DailyMed** | FDA drug label data | [DailyMed Services](https://dailymed.nlm.nih.gov/dailymed/app-support-web-services.cfm) |
+| **Hugging Face** | BGE Reranker Model | [BGE Reranker V2-M3](https://huggingface.co/BAAI/bge-reranker-v2-m3) |
+
+---
 
 ## ☁️ **Data Infrastructure**
 
@@ -131,14 +151,14 @@ Indian medical guidelines are stored in raw format within secured Google Cloud S
 
 ### **Vector Database (Firestore)**
 Processed guidelines are chunked and stored as vector embeddings in Firestore for semantic retrieval.
-![Firestore - Vector Embeddings](https://storage.googleapis.com/openwork-images/Screenshot%202026-02-09%20at%209.53.05%E2%80%AFpm.png)
+![Firestore - Vector Embeddings](https://storage.googleapis.com/openwork-images/Screenshot%202026-02-09%20at%207.16.21%E2%80%AFpm.png)
 
 ---
 
 ## 🚀 **Quick Start**
 
 1. **Install**: `npm install && pip install -r requirements.txt`
-2. **Configure**: Copy `.env.example` to `.env.local` and add your **Gemini 3** keys.
+2. **Configure**: Copy `.env.example` to `.env.local` and add your **Gemini** keys.
 3. **Run**: `npm run dev`
 
 ---
