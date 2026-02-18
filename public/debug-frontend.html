@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Debug Test</title>
+</head>
+<body>
+    <h1>Frontend API Test</h1>
+    <button onclick="testAPI()">Test API Call</button>
+    <div id="result"></div>
+
+    <script>
+        async function testAPI() {
+            console.log("🔍 Testing API call...");
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        messages: [
+                            {
+                                role: 'user',
+                                content: 'What is diabetes?'
+                            }
+                        ],
+                        mode: 'doctor'
+                    })
+                });
+
+                console.log("🔍 Response status:", response.status);
+                console.log("🔍 Response headers:", [...response.headers.entries()]);
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error("❌ API Error:", errorData);
+                    document.getElementById('result').innerHTML = `<pre>ERROR: ${JSON.stringify(errorData, null, 2)}</pre>`;
+                    return;
+                }
+
+                const result = await response.json();
+                console.log("✅ API Success:", {
+                    hasResponse: !!result.response,
+                    responseLength: result.response?.length || 0,
+                    responsePreview: result.response?.substring(0, 200) + "...",
+                    model: result.model,
+                    mode: result.mode,
+                    medicalImagesCount: result.medicalImages?.length || 0
+                });
+
+                document.getElementById('result').innerHTML = `
+                    <h2>API Response:</h2>
+                    <p><strong>Status:</strong> SUCCESS</p>
+                    <p><strong>Response Length:</strong> ${result.response?.length || 0} characters</p>
+                    <p><strong>Model:</strong> ${result.model}</p>
+                    <p><strong>Mode:</strong> ${result.mode}</p>
+                    <p><strong>Medical Images:</strong> ${result.medicalImages?.length || 0}</p>
+                    <h3>Response Preview:</h3>
+                    <pre style="background: #f5f5f5; padding: 10px; max-height: 300px; overflow-y: auto;">${result.response?.substring(0, 1000) + "..."}</pre>
+                `;
+
+            } catch (error) {
+                console.error("❌ Network Error:", error);
+                document.getElementById('result').innerHTML = `<pre>NETWORK ERROR: ${error.message}</pre>`;
+            }
+        }
+    </script>
+</body>
+</html>
