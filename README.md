@@ -11,7 +11,7 @@ OpenWork is a **research synthesis tool** specifically designed for healthcare p
 
 ### 🚀 **Live Demo & Video**
 - **Try the App**: [Detailed Research Interface (Cloud Run)](https://openwork-217388700222.us-central1.run.app/unified)
-- **Watch the Video**: [YouTube Walkthrough](https://youtu.be/e-dqS6pKJZM)
+- **Watch the Video**: [YouTube Walkthrough]()
 
 ![OpenWork Dashboard](https://storage.googleapis.com/openwork-images/dashboard.png)
 
@@ -120,10 +120,21 @@ The codebase is modularly organized into a Next.js frontend for professional med
 
 ## 🧠 **System Prompts**
 
-The core logic for the agents is defined in the system prompts. You can find key prompts here:
+The core logic for the agents is defined in the system prompts. Below is the location of the system prompt for each agent:
 
-- **Agent Prompts**: `lib/agents/system-prompts/` (Contains prompts for various sub-agents)
-- **Study Mode Prompt**: `lib/prompts/study-mode-prompt.ts`
+| Agent | System Prompt Location |
+| :--- | :--- |
+| **Agent 1: Query Intelligence** | `lib/agents/query-intelligence.ts` (Embedded) |
+| **Agent 2.1: Guidelines** | `lib/agents/system-prompts/guidelines-retriever-prompt.ts` |
+| **Agent 2.2: PubMed** | `lib/agents/system-prompts/pubmed-intelligence-prompt.ts` |
+| **Agent 2.3: Full-Text** | `lib/agents/system-prompts/fulltext-fetcher-prompt.ts` |
+| **Agent 2.4: DailyMed** | `lib/agents/system-prompts/dailymed-retriever-prompt.ts` |
+| **Agent 2.5: Tavily** | `lib/agents/system-prompts/tavily-search-prompt.ts` |
+| **Agent 3: Evidence Normalizer** | `lib/agents/evidence-normalizer.ts` (Logic-based normalization) |
+| **Agent 4: BGE Reranker** | `lib/agents/system-prompts/bge-reranker-prompt.ts` |
+| **Agent 5: Evidence Gap Analyzer** | `lib/agents/evidence-gap-analyzer.ts` (Embedded) |
+| **Agent 6: Synthesis Engine** | `lib/agents/synthesis-engine.ts` (Embedded) |
+| **Agent 7: Verification Gate** | `lib/agents/verification-gate.ts` (Embedded) |
 
 ---
 
@@ -147,7 +158,7 @@ OpenWork leverages a robust Google Cloud implementation for handling medical dat
 
 ### **Raw Guidelines Storage (GCS)**
 Indian medical guidelines are stored in raw format within secured Google Cloud Storage buckets.
-![Google Cloud Storage - Raw Guidelines](https://storage.googleapis.com/openwork-images/Screenshot%202026-02-09%20at%207.16.21%E2%80%AFpm.png)
+![Google Cloud Storage - Raw Guidelines](https://storage.googleapis.com/openwork-images/Screenshot%202026-02-18%20at%208.57.08%E2%80%AFpm.png)
 
 ### **Vector Database (Firestore)**
 Processed guidelines are chunked and stored as vector embeddings in Firestore for semantic retrieval.
