@@ -51,17 +51,23 @@ OpenWork AI operates through a sophisticated **7-agent system** powered by **Gem
 ### **Agent 1: Query Intelligence**
 - **Purpose**: Analyzes raw natural language to extract medical entities and generate specialized search variants.
 - **Function**: Abbreviation expansion, intent classification, and routing to sub-agents.
+- 📄 **[System Prompt](lib/agents/query-intelligence.ts)**
 
 ### **Agent 2: Multi-source Retrieval Coordinator (Multi-Agent RAG System)**
 ![OpenWork AI Multi-Source Retrieval Coordinator](https://storage.googleapis.com/openwork-images/mermaid-diagram%20(sub-agents).png)
 - **Technology**: Python Async Orchestrator
 - **Purpose**: Coordinates parallel evidence collection.
 - **Sub-Agents (2.1 to 2.5)**:
-  - **2.1: Guidelines Retriever**: Vector search across Indian clinical practice guidelines.
-  - **2.2: PubMed Intelligence**: Advanced query building with MeSH term mapping.
-  - **2.3: Full-Text Fetcher**: Retrieves structured content from PMC and open-access PDFs.
-  - **2.4: DailyMed Retriever**: Extracts safety, dosing, and warning sections from FDA labels.
-  - **2.5: Tavily Smart Search**: On-demand search for recent literature.
+  - **2.1: Guidelines Retriever**: Vector search across Indian clinical practice guidelines.  
+    📄 **[System Prompt](lib/agents/system-prompts/guidelines-retriever-prompt.ts)**
+  - **2.2: PubMed Intelligence**: Advanced query building with MeSH term mapping.  
+    📄 **[System Prompt](lib/agents/system-prompts/pubmed-intelligence-prompt.ts)**
+  - **2.3: Full-Text Fetcher**: Retrieves structured content from PMC and open-access PDFs.  
+    📄 **[System Prompt](lib/agents/system-prompts/fulltext-fetcher-prompt.ts)**
+  - **2.4: DailyMed Retriever**: Extracts safety, dosing, and warning sections from FDA labels.  
+    📄 **[System Prompt](lib/agents/system-prompts/dailymed-retriever-prompt.ts)**
+  - **2.5: Tavily Smart Search**: On-demand search for recent literature.  
+    📄 **[System Prompt](lib/agents/system-prompts/tavily-search-prompt.ts)**
 
 ### **Agent 3: Evidence Normalizer**
 - **Purpose**: Standardizes data from multiple formats (XML, HTML, JSON) into a unified structure.
@@ -75,14 +81,17 @@ OpenWork AI operates through a sophisticated **7-agent system** powered by **Gem
 ### **Agent 5: Evidence Gap Analyzer**
 - **Purpose**: Evaluates evidence coverage and identifies missing elements (recency, quality gaps).
 - **Function**: Conditionally triggers Agent 2.5 if gaps are detected.
+- 📄 **[System Prompt](lib/agents/evidence-gap-analyzer.ts)**
 
 ### **Agent 6: Synthesis Engine**
 - **Purpose**: Generates the final research synthesis or interactive study materials.
 - **Function**: Handles contradictions explicitly and ensures every claim has an inline citation [N].
+- 📄 **[System Prompt](lib/agents/synthesis-engine.ts)**
 
 ### **Agent 7: Verification Gate**
 - **Purpose**: Final anti-hallucination verification.
 - **Function**: Performs semantic grounding checks to ensure the synthesis matches the source text.
+- 📄 **[System Prompt](lib/agents/verification-gate.ts)**
 
 ---
 
@@ -103,7 +112,7 @@ openwork-ai/
 ├── 📄 README.md            # System Overview
 ├── 📄 project.md           # Technical Architecture
 ├── 📄 Product.md           # Product Vision & Goals
-└── 📄 AGENTS.md            # Detailed Agent Documentation
+├── 📄 AGENTS.md            # Detailed Agent Documentation
 ```
 The codebase is modularly organized into a Next.js frontend for professional medical UI interactions, an orchestration layer that manages the 7-agent pipeline, and a robust data layer connecting to 46+ authoritative medical sources.
 
@@ -115,24 +124,6 @@ The codebase is modularly organized into a Next.js frontend for professional med
 - **🎓 Study & Learn Mode**: Interactive 5-question quizzes with evidence-based explanations.
 - **🚀 High Performance**: End-to-end synthesis in under 60 seconds.
 - **🩺 Professional UX**: Designed for rapid information access in clinical workflows.
-
----
-
-## 🧠 **System Prompts**
-
-The core logic for the agents is defined in the system prompts. Below is the location of the system prompt for each agent:
-
-| Agent | System Prompt Location |
-| :--- | :--- |
-| **Agent 1: Query Intelligence** | `lib/agents/query-intelligence.ts` (Embedded) |
-| **Agent 2.1: Guidelines** | `lib/agents/system-prompts/guidelines-retriever-prompt.ts` |
-| **Agent 2.2: PubMed** | `lib/agents/system-prompts/pubmed-intelligence-prompt.ts` |
-| **Agent 2.3: Full-Text** | `lib/agents/system-prompts/fulltext-fetcher-prompt.ts` |
-| **Agent 2.4: DailyMed** | `lib/agents/system-prompts/dailymed-retriever-prompt.ts` |
-| **Agent 2.5: Tavily** | `lib/agents/system-prompts/tavily-search-prompt.ts` |
-| **Agent 5: Evidence Gap Analyzer** | `lib/agents/evidence-gap-analyzer.ts` (Embedded) |
-| **Agent 6: Synthesis Engine** | `lib/agents/synthesis-engine.ts` (Embedded) |
-| **Agent 7: Verification Gate** | `lib/agents/verification-gate.ts` (Embedded) |
 
 ---
 
