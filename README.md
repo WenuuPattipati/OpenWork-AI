@@ -130,8 +130,6 @@ The core logic for the agents is defined in the system prompts. Below is the loc
 | **Agent 2.3: Full-Text** | `lib/agents/system-prompts/fulltext-fetcher-prompt.ts` |
 | **Agent 2.4: DailyMed** | `lib/agents/system-prompts/dailymed-retriever-prompt.ts` |
 | **Agent 2.5: Tavily** | `lib/agents/system-prompts/tavily-search-prompt.ts` |
-| **Agent 3: Evidence Normalizer** | `lib/agents/evidence-normalizer.ts` (Logic-based normalization) |
-| **Agent 4: BGE Reranker** | `lib/agents/system-prompts/bge-reranker-prompt.ts` |
 | **Agent 5: Evidence Gap Analyzer** | `lib/agents/evidence-gap-analyzer.ts` (Embedded) |
 | **Agent 6: Synthesis Engine** | `lib/agents/synthesis-engine.ts` (Embedded) |
 | **Agent 7: Verification Gate** | `lib/agents/verification-gate.ts` (Embedded) |
