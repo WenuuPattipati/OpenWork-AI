@@ -11,7 +11,6 @@ OpenWork is a **research synthesis tool** specifically designed for healthcare p
 
 ### 🚀 **Live Demo & Video**
 - **Try the App**: [Detailed Research Interface (Cloud Run)](https://openwork-217388700222.us-central1.run.app/unified)
-- **Watch the Video**: [YouTube Walkthrough]()
 
 ![OpenWork Dashboard](https://storage.googleapis.com/openwork-images/dashboard.png)
 
